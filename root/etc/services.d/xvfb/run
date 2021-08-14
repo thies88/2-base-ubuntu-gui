@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bash
+
+#check for .lock file and remove it in case of service/container restart
+if [ ! -f "/tmp/.X99-lock" ]; then
+echo "Xvfb is good to go"
+else
+rm -rf /tmp/.X99-lock
+fi
+
+exec \
+ #/bin/s6-notifyoncheck -d 
+ s6-setuidgid abc Xvfb $DISPLAY -screen 0 ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT}x${DEPTH}
+
+#exec 2>&1 /bin/s6-notifyoncheck -d Xvfb $DISPLAY -screen 0 ${DISPLAY_WIDTH}x${DISPLAY_HEIGHT}x${DEPTH}
+
+#/usr/bin/Xvfb

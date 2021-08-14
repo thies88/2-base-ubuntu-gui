@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+	
+# at first bootup we need to copy our noVNC dir to /config so we survive container updates
+if [ ! -f /config/www/noVNC/vnc.html ]; then
+echo "Copying noVNC to /config/www folder..."
+mv /usr/share/noVNC /config/www
+else
+echo "noVNC exists"
+fi	
+
+# fix permissions
+chown -R abc:abc \
+	/config/www \
+
+# clean tmp folder of .lock files#check for .lock file and remove it in case of service/container restart
+if [ ! -f /tmp/.X99-lock ]; then
+echo "Xvfb no lock file found"
+else
+echo "Xvfb lock file found, removing..."
+rm -rf /tmp/.X99-lock
+fi
+
+if [ ! -d /tmp/.X11-unix ]; then
+echo "X11 no lock file"
+else
+echo "x11vnc lock file found, removing..."
+rm -rf /tmp/.X11-unix
+fi

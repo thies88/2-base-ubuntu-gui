@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+	#s6-setuidgid abc python3 /app/sabnzbd/SABnzbd.py
+	#/bin/s6-notifyoncheck -d
+	s6-setuidgid abc openbox-session
